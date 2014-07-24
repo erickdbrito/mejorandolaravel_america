@@ -1,7 +1,19 @@
 <?php
 use HireMe\Entities\User;
+use HireMe\Managers\RegisterManager;
+use HireMe\Repositories\CandidateRepo;
+use HireMe\Managers\AccountManager;
 
 class UsersController extends BaseController{
+
+	protected $candidateRepo;
+
+	public function __construct(CandidateRepo $candidateRepo)
+	{
+		$this->candidateRepo = $candidateRepo;
+	}
+
+
 
 	public function signUp()
 	{
@@ -10,28 +22,39 @@ class UsersController extends BaseController{
 
 	public function register()
 	{
-		$data = Input::only(['full_name', 'email', 'password', 'password_confirmation']);
-		$rules = [
-			'full_name' => 'required',
-			'email'		=> 'required|email|unique:users,email',
-			'password'	=> 'required|confirmed',
-			'password_confirmation' => 'required'
-		];
+		$user = $this->candidateRepo->newCandidate();
+		$data = Input::all();
+		
+		$manager = new RegisterManager($user, $data);
+		$manager->save();
 
+		return Redirect::route('home');
+	}
 
-		 $validation = \Validator::make($data, $rules);
+	public function account()
+	{
+		$user = Auth::user();
+		return View::make('users/account', compact('user'));
+	}
 
-		if($validation->passes())
-		{
-			$user = new User($data);
-			$user->type = 'candidato';
-			$user->save();
+	public function updateAccount()
+	{
+		$user = Auth::user();
+		$data = Input::all();
+		
+		$manager = new AccountManager($user, $data);
+		$manager->save();
+		
+		return Redirect::route('home');
+	}
 
-			//User::create($data);
-			return Redirect::route('home');
-		}
+	public function profile()
+	{
 
-		return Redirect::back()->withInput()->withErrors($validation->messages());
+	}
+
+	public function updateProfile()
+	{
 
 	}
 }
