@@ -104,7 +104,12 @@ return array(
             'full_name' => 'nombre completo',
             'email'     => 'e-mail',
             'password'  => 'password',
-            'password_confirmation' => 'repita su password'
+            'password_confirmation' => 'repita su password',
+            'category_id' => 'categoría',
+            'job_type'    => 'tipo de trabajo',
+            'description' => 'Descripción',
+            'website_url' => 'URL de tú Website',
+            'available'   => 'Disponible'
         ),
 
 );

@@ -2,15 +2,19 @@
 use HireMe\Entities\User;
 use HireMe\Managers\RegisterManager;
 use HireMe\Repositories\CandidateRepo;
+use HireMe\Repositories\CategoryRepo;
 use HireMe\Managers\AccountManager;
 
 class UsersController extends BaseController{
 
 	protected $candidateRepo;
+	protected $categoryRepo;
 
-	public function __construct(CandidateRepo $candidateRepo)
+	public function __construct(CandidateRepo $candidateRepo,
+															CategoryRepo $categoryRepo)
 	{
-		$this->candidateRepo = $candidateRepo;
+		$this->candidateRepo  = $candidateRepo;
+		$this->categoryRepo 	= $categoryRepo;
 	}
 
 
@@ -18,13 +22,13 @@ class UsersController extends BaseController{
 	public function signUp()
 	{
 		return View::make('users/sign-up');
-	}	
+	}
 
 	public function register()
 	{
 		$user = $this->candidateRepo->newCandidate();
 		$data = Input::all();
-		
+
 		$manager = new RegisterManager($user, $data);
 		$manager->save();
 
@@ -41,20 +45,33 @@ class UsersController extends BaseController{
 	{
 		$user = Auth::user();
 		$data = Input::all();
-		
+
 		$manager = new AccountManager($user, $data);
 		$manager->save();
-		
+
 		return Redirect::route('home');
 	}
 
 	public function profile()
 	{
+		$user = Auth::user();
 
+		$categories = $this->categoryRepo->getList();
+		$job_types  = \Lang::get('utils.job_types');
+
+		$candidate = $user->candidate;
+
+		return View::make('users/profile', compact('user','candidate', 'categories', 'job_types'));
 	}
 
-	public function updateProfile()
+	public function profileAccount()
 	{
+		$user = Auth::user();
+		$candidate = $user->candidate;
 
+		$manager = new ProfileManager($candidate, $data);
+		$manager->save();
+
+		return Redirect::route('home');
 	}
 }

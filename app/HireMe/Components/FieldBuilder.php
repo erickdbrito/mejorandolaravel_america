@@ -25,10 +25,10 @@ class FieldBuilder
 	public function getDefaultClass($type)
 	{
 		if (isset($this->defaultClass[$type])) {
-			
+
 			return $this->defaultClass[$type];
 		}
-		
+
 		return $this->defaultClass['default'];
 	}
 
@@ -66,11 +66,14 @@ class FieldBuilder
 	{
 		switch ($type) {
 			case 'select':
+				$options = array('' => '...') + $options;
 				return $this->form->select($name, $options, $value, $attributes);
 			case 'password':
 				return $this->form->password($name, $attributes);
 			case 'checkbox':
 				return $this->form->checkbox($name);
+			case 'textarea':
+				return $this->form->textarea($name, $value, $attributes);
 			default:
 				return $this->form->input($type, $name, $value, $attributes);
 		}
@@ -92,7 +95,7 @@ class FieldBuilder
 
 	public function buildTemplate($type)
 	{
-		if (\File::exists('app/views/flieds/' . $type . '.blade.php')) 
+		if (\File::exists('app/views/flieds/' . $type . '.blade.php'))
 		{
 			return 'fields/'. $type;
 		}
@@ -115,6 +118,11 @@ class FieldBuilder
 	public function password($name, $attributes  = array())
 	{
 		return $this->input('password', $name, null, $attributes);
+	}
+
+	public function select($name, $options = array(),  $value = null, $attributes = array())
+	{
+		return $this->input('select', $name, $value, $attributes, $options);
 	}
 
 	public function __call($method, $params)
