@@ -9,9 +9,9 @@
     <p>Proyecto construido con PHP usando el framework Laravel de la clases de Mejorando.la .</p>
 
     <p><a class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a></p>
-
+    @if(Auth::guest())
     <p><a href="{{ route('sign_up') }}" class="btn btn-primary btn-lg" role="button">Postulate! &raquo;</a></p>
-
+    @endif
   </div>
 </div>
 

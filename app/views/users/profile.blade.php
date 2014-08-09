@@ -11,7 +11,7 @@
 
 			{{ Field::url('website_url') }}
 
-			{{ Field::textarea('description') }}
+			{{{ Field::textarea('description') }}}
 
 			{{ Field::select('job_type', $job_types) }}
 
