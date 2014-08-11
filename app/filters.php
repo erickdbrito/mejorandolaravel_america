@@ -70,6 +70,16 @@ Route::filter('guest', function()
 	if (Auth::check()) return Redirect::to('/');
 });
 
+
+/**
+ * Filter to know if a user is not type admin
+ */
+
+Route::filter('is_admin', function()
+{
+	if ( ! is_admin() ) return Redirect::to('/');
+});
+
 /*
 |--------------------------------------------------------------------------
 | CSRF Protection Filter

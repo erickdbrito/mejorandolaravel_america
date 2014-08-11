@@ -27,5 +27,10 @@
   <h4>Descripción</h4>
   {{ $candidate->description }}
 
+  @if(is_admin())
+    <p>
+    <a href="{{route('admin_candidate_edit', [$candidate->id])}}" class="btn">Editar al candidato</a>
+  </p>
+  @endif
 </div>
 @endsection

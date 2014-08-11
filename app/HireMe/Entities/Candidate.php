@@ -20,9 +20,9 @@ class Candidate extends \Eloquent {
 		return \Lang::get('utils.job_types.'.$this->job_type);
 	}
 
-	public function getTrimedDescription()
-	{
-			return true;
-	}
+	public function getShortDescriptionAttribute()
+  {
+        return substr($this->description, 0, 100) . '...';
+  }
 
 }
